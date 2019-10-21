@@ -10,51 +10,38 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import entities.Deltager;
 import utilities.InnloggingUtil;
 import utilities.Validering;
 
 @WebServlet(name = "Påmelding", urlPatterns = "/paamelding")
 public class PaameldingServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	Hashtable<String, String> errors;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
 		String feilmeldingFornavn = "", feilmeldingEtternavn = "", feilmeldingMobil = "", feilmeldingPassord = "",
 				feilmeldingUlikePassord = "", feilmeldingKjonn = "";
+		String feilmelding = "";
 		String feilkode = request.getParameter("feilkode");
-//		if (feilkode != null) {
-//			if (feilkode.contentEquals("1")) {
-//				feilmeldingFornavn = "Ugyldig fornavn";
-//			}
-//			if (feilkode.contentEquals("2")) {
-//				feilmeldingEtternavn = "Ugyldig etternavn";
-//			}
-//			if (feilkode.contentEquals("3")) {
-//				feilmeldingMobil = "Ugyldig mobilnummer";
-//			}
-//			if (feilkode.contentEquals("4")) {
-//				feilmeldingPassord = "Ugyldig passord";
-//			}
-//			if(feilkode.contentEquals("5")) {
-//				feilmeldingUlikePassord = "Passordene må være like";
-//			}
-//			if(feilkode.contentEquals("6")) {
-//				feilmeldingKjonn = "Du må oppgi kjønn";
-//			}
-//		}
-		@SuppressWarnings("unchecked")
-		Hashtable<String, String> errors = (Hashtable<String, String>) request.getAttribute("errors");
-		if (feilkode != null && errors != null && !errors.isEmpty()) {
-			feilmeldingFornavn = errors.get("fornavn");
-			feilmeldingEtternavn = errors.get("etternavn");
-			feilmeldingMobil = errors.get("mobil");
-			feilmeldingPassord = errors.get("passord");
-			feilmeldingUlikePassord = errors.get("ulikePassord");
-			feilmeldingKjonn = errors.get("kjonn");
-		}
 		
+		@SuppressWarnings("unchecked")
+		Hashtable<String, String> feilmeldinger = (Hashtable<String, String>) request.getAttribute("errors");
+		if (feilkode != null && feilmeldinger != null && !feilmeldinger.isEmpty()) {
+			if (feilkode.equals("1")) {
+				feilmelding = "Skjemaet inneholder en eller flere feil...";
+			}
+			feilmeldingFornavn = feilmeldinger.get("fornavn");
+			feilmeldingEtternavn = feilmeldinger.get("etternavn");
+			feilmeldingMobil = feilmeldinger.get("mobil");
+			feilmeldingPassord = feilmeldinger.get("passord");
+			feilmeldingUlikePassord = feilmeldinger.get("ulikePassord");
+			feilmeldingKjonn = feilmeldinger.get("kjonn");
+		}
+		System.out.println("Error table: " + feilmeldinger);
+		System.out.println("Feilkode: " + feilkode);
+
 		request.setAttribute("feilmeldingFornavn", feilmeldingFornavn);
 		request.setAttribute("feilmeldingEtternavn", feilmeldingEtternavn);
 		request.setAttribute("feilmeldingMobil", feilmeldingMobil);
@@ -72,8 +59,7 @@ public class PaameldingServlet extends HttpServlet {
 		String passord = request.getParameter("passord");
 		String passordRepetert = request.getParameter("passordRepetert");
 		String kjonn = request.getParameter("kjonn");
-		errors = new Hashtable<String, String>();
-		
+		Hashtable<String, String> errors = new Hashtable<String, String>();
 
 		if (!Validering.erGyldigFornavn(fornavn)) {
 			errors.put("fornavn", "Ugyldig fornavn");
@@ -84,6 +70,8 @@ public class PaameldingServlet extends HttpServlet {
 		if (!Validering.erGyldigMobil(mobil)) {
 			errors.put("mobil", "Ugyldig mobilnummer");
 		}
+		
+		//TODO MÅ OGSÅ SJEKKE AT MOBILNUMMERET IKKE FINNES I DATABASEN!
 		if (!Validering.erGyldigPassord(passord)) {
 			errors.put("passord", "Ugyldig passord");
 		}
@@ -95,27 +83,21 @@ public class PaameldingServlet extends HttpServlet {
 		}
 
 		System.out.println(errors);
-		if (errors.isEmpty()) {
+
+		if (!errors.isEmpty()) {
+			request.setAttribute("errors", errors);
+			response.sendRedirect("paamelding?feilkode=1");
+		} else {
 			HttpSession sesjon = InnloggingUtil.loggInnMedTimeout(request, 120);
+			Deltager deltager = new Deltager(fornavn, etternavn, mobil, passord, kjonn);
+			//TODO må legge inn ny person i database.
+			
 			sesjon.setAttribute("fornavn", fornavn);
 			sesjon.setAttribute("etternavn", etternavn);
 			sesjon.setAttribute("mobil", mobil);
 			response.sendRedirect("bekreftelse");
-		} else {
-			request.setAttribute("errors", errors);
-			response.sendRedirect("paamelding?feilkode=1");
-
 		}
-
-//		if (!Validering.erGyldigFornavn(fornavn)) {
-//			
-//			response.sendRedirect("paamelding?feilkode=1");
-//		}else {
-//			HttpSession sesjon = InnloggingUtil.loggInnMedTimeout(request, 120);
-//			
-//			sesjon.setAttribute("fornavn", fornavn);
-//			response.sendRedirect("bekreftelse");
-//		}
+//	
 
 	}
 

@@ -19,6 +19,7 @@ public class Validering {
 
 		return mobil.matches("[0-9]{8}");
 	}
+	
 
 	public static boolean erLikePassord(String passord, String passordRepetert) {
 		return passord.contentEquals(passordRepetert);

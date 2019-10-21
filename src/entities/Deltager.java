@@ -16,12 +16,16 @@ public class Deltager {
 	
 	
 	
-	public Deltager(String fornavn, String etternavn, String mobil, String passord, String kjonn) throws NoSuchAlgorithmException {
+	public Deltager(String fornavn, String etternavn, String mobil, String passord, String kjonn) {
 		this.fornavn = fornavn;
 		this.etternavn = etternavn;
 		this.mobil = mobil;
 		Hashing hash = new Hashing("SHA-256");
-		hash.generateHashWithSalt(passord, hash.getSalt());
+		try {
+			hash.generateHashWithSalt(passord, hash.getSalt());
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
 		passordhash = hash.getPasswordHashinHex();
 		passordsalt = hash.getPasswordSalt();
 		this.kjonn = kjonn;
