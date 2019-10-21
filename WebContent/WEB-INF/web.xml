@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:web="http://java.sun.com/xml/ns/javaee"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	id="WebApp_ID" version="3.0">
+	<display-name>Velkommen til tidenes fest! </display-name>
+	<welcome-file-list>
+		<welcome-file>paamelding</welcome-file>
+	</welcome-file-list>
+	<servlet>
+		<servlet-name>Påmelding</servlet-name>
+		<servlet-class>servlets.PaameldingServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>LoggInn</servlet-name>
+		<servlet-class>servlets.LoggInnServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>Bekreftelse</servlet-name>
+		<servlet-class>servlets.BekreftelseServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>Deltagerliste</servlet-name>
+		<servlet-class>servlets.DeltagereServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>LoggUt</servlet-name>
+		<servlet-class>servlets.LoggUtServlet</servlet-class>
+	</servlet>
+	
+</web-app>
