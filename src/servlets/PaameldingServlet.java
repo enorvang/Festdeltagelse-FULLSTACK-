@@ -41,7 +41,9 @@ public class PaameldingServlet extends HttpServlet {
 		}
 		System.out.println("Error table: " + feilmeldinger);
 		System.out.println("Feilkode: " + feilkode);
+		System.out.println("Feilmelding: " + feilmelding);
 
+		//TODOBruke datastruktur for sending av parametere i stedet for enkeltvis? 
 		request.setAttribute("feilmeldingFornavn", feilmeldingFornavn);
 		request.setAttribute("feilmeldingEtternavn", feilmeldingEtternavn);
 		request.setAttribute("feilmeldingMobil", feilmeldingMobil);
@@ -70,8 +72,7 @@ public class PaameldingServlet extends HttpServlet {
 		if (!Validering.erGyldigMobil(mobil)) {
 			errors.put("mobil", "Ugyldig mobilnummer");
 		}
-		
-		//TODO MÅ OGSÅ SJEKKE AT MOBILNUMMERET IKKE FINNES I DATABASEN!
+	
 		if (!Validering.erGyldigPassord(passord)) {
 			errors.put("passord", "Ugyldig passord");
 		}
@@ -84,13 +85,21 @@ public class PaameldingServlet extends HttpServlet {
 
 		System.out.println(errors);
 
+		
+		//TODO MÅ OGSÅ SJEKKE AT MOBILNUMMERET IKKE FINNES I DATABASEN!
+		
 		if (!errors.isEmpty()) {
 			request.setAttribute("errors", errors);
 			response.sendRedirect("paamelding?feilkode=1");
 		} else {
 			HttpSession sesjon = InnloggingUtil.loggInnMedTimeout(request, 120);
+			
+			//TODO Registrere deltager i databasen.
+			//generere passordsalt
+			//hashe inntastet passord
+			//
+			
 			Deltager deltager = new Deltager(fornavn, etternavn, mobil, passord, kjonn);
-			//TODO må legge inn ny person i database.
 			
 			sesjon.setAttribute("fornavn", fornavn);
 			sesjon.setAttribute("etternavn", etternavn);

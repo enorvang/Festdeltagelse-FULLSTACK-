@@ -22,7 +22,7 @@
 	</servlet>
 	<servlet>
 		<servlet-name>Deltagerliste</servlet-name>
-		<servlet-class>servlets.DeltagereServlet</servlet-class>
+		<servlet-class>servlets.DeltagerlisteServlet</servlet-class>
 	</servlet>
 	<servlet>
 		<servlet-name>LoggUt</servlet-name>
