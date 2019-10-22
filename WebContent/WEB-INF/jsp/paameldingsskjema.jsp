@@ -19,28 +19,28 @@
 			<div class="pure-control-group">
 				<label for="fornavn">Fornavn:</label> <input type="text"
 					name="fornavn" value="" /> 
-					<font color="red">${feilmeldingFornavn}</font>
+					<font color="red"><c:out value="${errors.fornavn}"/></font>
 			</div>
 			<div class="pure-control-group">
 				<label for="etternavn">Etternavn:</label> <input type="text"
 					name="etternavn" value="" /> 
-					<font color="red">${feilmeldingEtternavn}</font>
+					<font color="red">${errors.etternavn}</font>
 			</div>
 			<div class="pure-control-group">
 				<label for="mobil">Mobil (8 siffer):</label> <input type="text"
 					name="mobil" value="" /> 
-					<font color="red">${feilmeldingMobil}</font>
+					<font color="red">${errors.mobil}</font>
 			</div>
 			<div class="pure-control-group">
 				<label for="password">Passord:</label> <input type="password"
 					name="passord" value="" /> 
-					<font color="red">${feilmeldingPassord}</font>
+					<font color="red">${errors.passord}</font>
 			</div>
 			<div class="pure-control-group">
 				<label for="passordRepetert">Passord repetert:</label> <input
 					type="password" name="passordRepetert"
 					value="" /> 
-					<font color="red">${feilmeldingUlikePassord}</font>
+					<font color="red">${errors.ulikePassord}</font>
 			</div>
 			<div class="pure-control-group">
 				<label for="kjonn">Kjønn:</label> <input type="radio" name="kjonn"
@@ -48,7 +48,7 @@
 					 />mann
 				<input type="radio" name="kjonn" value="kvinne"
 					 />kvinne
-				<font color="red">${feilmeldingKjonn}</font>
+				<font color="red">${errors.kjonn}</font>
 			</div>
 			<div class="pure-controls">
 				<button type="submit" class="pure-button pure-button-primary">Meld
