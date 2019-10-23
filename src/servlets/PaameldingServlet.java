@@ -87,7 +87,7 @@ public class PaameldingServlet extends HttpServlet {
 
 				deltagerEAO.leggTilDeltager(d);
 				request.setAttribute("registreringsskjema", rs);
-				sesjon.setAttribute("deltager", d);
+				sesjon.setAttribute("innloggetDeltager", d);
 				response.sendRedirect("bekreftelse");
 			}
 		}

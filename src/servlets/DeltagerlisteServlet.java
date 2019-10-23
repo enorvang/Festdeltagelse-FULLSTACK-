@@ -23,17 +23,18 @@ public class DeltagerlisteServlet extends HttpServlet {
    
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession sesjon = request.getSession(false);
-		Deltager innloggetDeltager = (Deltager) sesjon.getAttribute("deltager");
 		
-		if(sesjon == null || innloggetDeltager == null) {
+		
+		if(sesjon == null) {
 			response.sendRedirect("login");
-		}
+		}else {
 		
-		
+		Deltager innloggetDeltager = (Deltager) sesjon.getAttribute("innloggetDeltager");
 		List<Deltager> deltagerliste = deltagerEAO.hentDeltagerliste();
 		request.setAttribute("deltagerliste", deltagerliste);
 		request.setAttribute("innloggetDeltager", innloggetDeltager);
 		request.getRequestDispatcher("WEB-INF/jsp/deltagerliste.jsp").forward(request, response);
+		}
 	}
 
 

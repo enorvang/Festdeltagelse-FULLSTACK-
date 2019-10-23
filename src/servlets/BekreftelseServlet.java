@@ -21,10 +21,11 @@ public class BekreftelseServlet extends HttpServlet {
 		
 		HttpSession sesjon = request.getSession(false);
 		if (sesjon == null) {
-			//Ved forsøk på å gå direkte til handleliste uten å gå gjennom innloggingssiden
-			response.sendRedirect("login?feilkode=9");
+			//Ved forsøk på å gå direkte til bekreftelse uten å gå gjennom innloggingssiden
+			response.sendRedirect("login?feilkode=9"); //må fikse feilkode
 		} else {
-			Deltager deltager = (Deltager) sesjon.getAttribute("deltager");
+			
+			Deltager deltager = (Deltager) sesjon.getAttribute("innloggetDeltager");
 			request.setAttribute("deltager", deltager);
 			request.getRequestDispatcher("WEB-INF/jsp/paameldingsbekreftelse.jsp").forward(request, response);
 		}

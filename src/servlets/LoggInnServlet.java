@@ -28,7 +28,14 @@ public class LoggInnServlet extends HttpServlet {
 	DeltagerEAO deltagerEAO;
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		String feilkode = request.getParameter("feilkode");
+		String feilmelding = "";
+		if(feilkode != null) {
+			if(feilkode.contentEquals("2")) {
+				feilmelding = "Ugyldig brukernavn og/eller passord";
+			}
+		}
+		request.setAttribute("feilmelding", feilmelding);
 		request.getRequestDispatcher("WEB-INF/jsp/login.jsp").forward(request, response);
 	}
 
@@ -54,7 +61,7 @@ public class LoggInnServlet extends HttpServlet {
 				request.setAttribute("innloggetDeltager", d);
 				response.sendRedirect("deltagere");
 			}else {
-				response.sendRedirect("login");
+				response.sendRedirect("login?feilkode=2");
 			}
 		} catch (NoSuchAlgorithmException e) {
 			// TODO Auto-generated catch block
