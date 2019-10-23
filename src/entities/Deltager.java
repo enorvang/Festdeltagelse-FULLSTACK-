@@ -1,33 +1,30 @@
 package entities;
 
-import java.security.NoSuchAlgorithmException;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
-import javax.xml.bind.DatatypeConverter;
 
-import utilities.Hashing;
-
+@Entity
+@Table(schema="dat108oblig3", name="deltagere")
 public class Deltager {
+	
+	@Id
+	private String mobil;
 	private String fornavn;
 	private String etternavn;
-	private String mobil;
-	private String passordhash;
-	private String passordsalt;
+	private String passordHash;
 	private String kjonn;
 	
+	public Deltager() {
+		
+	}
 	
-	
-	public Deltager(String fornavn, String etternavn, String mobil, String passord, String kjonn) {
+	public Deltager(String fornavn, String etternavn, String mobil, String passordHash, String kjonn) {
 		this.fornavn = fornavn;
 		this.etternavn = etternavn;
 		this.mobil = mobil;
-		Hashing hash = new Hashing("SHA-256");
-		try {
-			hash.generateHashWithSalt(passord, hash.getSalt());
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
-		passordhash = hash.getPasswordHashinHex();
-		passordsalt = hash.getPasswordSalt();
+		this.passordHash = passordHash;
 		this.kjonn = kjonn;
 	}
 
@@ -62,15 +59,13 @@ public class Deltager {
 	}
 
 
-	public String getPassordhash() {
-		return passordhash;
+	public String getPassord() {
+		return passordHash;
 	}
 
-
-	public String getPassordsalt() {
-		return passordsalt;
+	public void setPassord(String passord) {
+		this.passordHash = passord;
 	}
-
 
 	public String getKjonn() {
 		return kjonn;

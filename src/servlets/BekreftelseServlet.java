@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import entities.Deltager;
+
 /**
  * Servlet implementation class BekreftelseServlet
  */
@@ -22,8 +24,8 @@ public class BekreftelseServlet extends HttpServlet {
 			//Ved forsøk på å gå direkte til handleliste uten å gå gjennom innloggingssiden
 			response.sendRedirect("login?feilkode=9");
 		} else {
-			String fornavn = (String) sesjon.getAttribute("fornavn");
-			request.setAttribute("fornavn", fornavn);
+			Deltager deltager = (Deltager) sesjon.getAttribute("deltager");
+			request.setAttribute("deltager", deltager);
 			request.getRequestDispatcher("WEB-INF/jsp/paameldingsbekreftelse.jsp").forward(request, response);
 		}
 		

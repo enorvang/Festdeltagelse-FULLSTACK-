@@ -19,21 +19,26 @@
 			<th align="left">Navn</th>
 			<th align="left">Mobil</th>
 		</tr>
-		<tr bgcolor="#aaffaa">
-			<td align="center">&#9792;</td>
-			<td>Anne Annesen</td>
-			<td>445 54 455</td>
-		</tr>
-		<tr bgcolor="#ffffff">
-			<td align="center">&#9794;</td>
-			<td>Arne Arnesen</td>
-			<td>901 23 456</td>
-		</tr>
-		<tr bgcolor="#ffffff">
-			<td align="center">&#9794;</td>
-			<td>Per Viskeler</td>
-			<td>112 23 344</td>
-		</tr>
+		<c:forEach var="deltager" items="${deltagerliste}">
+			<c:set var="innloggetDeltager" value="${innloggetDeltager}" />
+			<c:choose>
+			<c:when test="${deltager.mobil eq innloggetDeltager.mobil}">
+				<tr bgcolor="#aaffaa">
+					<td align="center">${deltager.kjonn = "kvinne" ? "&#9792;" : "&#9794;"}</td>
+					<td>${deltager.fornavn} ${deltager.etternavn}</td>
+					<td>${deltager.mobil}</td>
+				</tr>
+			</c:when>
+			<c:otherwise>
+				<tr bgcolor="#ffffff">
+					<td align="center">${deltager.kjonn = "kvinne" ? "&#9792;" : "&#9794;"}</td>
+					<td>${deltager.fornavn} ${deltager.etternavn}</td>
+					<td>${deltager.mobil}</td>
+				</tr>
+			</c:otherwise>
+			</c:choose>
+
+		</c:forEach>
 	</table>
 	<p>
 		<a href="loggut">Ferdig</a>
