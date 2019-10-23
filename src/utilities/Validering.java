@@ -41,25 +41,25 @@ public class Validering {
 		boolean gyldigInput = true;
 		if (!erGyldigFornavn(rs.getFornavn())) {
 			gyldigInput = false;
-			rs.setFornavnFeil("Feil fornavn");
+			rs.setFornavnFeil("Ugyldig fornavn");
 		} else {
 			rs.setFornavnFeil("");
 		}
 		if (!erGyldigEtternavn(rs.getEtternavn())) {
 			gyldigInput = false;
-			rs.setEtternavnFeil("Feil etternavn");
+			rs.setEtternavnFeil("Ugyldig etternavn");
 		} else {
 			rs.setEtternavnFeil("");
 		}
 		if (!erGyldigMobil(rs.getMobil())) {
 			gyldigInput = false;
-			rs.setMobilFeil("Feil mobil");
+			rs.setMobilFeil("Ugyldig mobil");
 		} else {
 			rs.setMobilFeil("");
 		}
 		if (!erGyldigPassord(rs.getPassord())) {
 			gyldigInput = false;
-			rs.setPassordFeil("Feil passord");
+			rs.setPassordFeil("Ugyldig passord");
 		} else {
 			rs.setPassordFeil("");
 		}
