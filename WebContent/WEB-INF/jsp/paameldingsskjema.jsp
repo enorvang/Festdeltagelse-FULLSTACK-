@@ -13,7 +13,7 @@
 </head>
 <body>
 	<h2>Påmelding</h2>
-	<font color="red">${feilmelding}</font>
+	<font color="red">${feilmelding}<a href="login">${loginLink }</a></font>
 	<form method="post" class="pure-form pure-form-aligned">
 		<fieldset>
 			<div class="pure-control-group">
