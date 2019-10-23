@@ -19,19 +19,20 @@ import utilities.InnloggingUtil;
 /**
  * Servlet implementation class LoggInnServlet
  */
-@WebServlet(name="LoggInn", urlPatterns="/login")
+@WebServlet(name = "LoggInn", urlPatterns = "/login")
 public class LoggInnServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private HashingUtil hashing = new HashingUtil("SHA-256");
-	
+
 	@EJB
 	DeltagerEAO deltagerEAO;
-    
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		String feilkode = request.getParameter("feilkode");
 		String feilmelding = "";
-		if(feilkode != null) {
-			if(feilkode.contentEquals("2")) {
+		if (feilkode != null) {
+			if (feilkode.contentEquals("2")) {
 				feilmelding = "Ugyldig brukernavn og/eller passord";
 			}
 		}
@@ -39,28 +40,27 @@ public class LoggInnServlet extends HttpServlet {
 		request.getRequestDispatcher("WEB-INF/jsp/login.jsp").forward(request, response);
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		
-		
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
 		HttpSession sesjon = request.getSession(false);
 		if (sesjon == null) {
 			response.sendRedirect("login");
 		}
-		
+
 		String mobil = request.getParameter("mobil");
 		String passord = request.getParameter("passord");
-		
+
 		Deltager d = deltagerEAO.finnDeltagerMedMobil(mobil);
-		
+
 		try {
-			if(hashing.validatePasswordWithSalt(passord, d.getPassordSalt(), d.getPassordHash())) {
-				
+			if (hashing.validatePasswordWithSalt(passord, d.getPassordSalt(), d.getPassordHash())) {
+
 				sesjon = InnloggingUtil.loggInnMedTimeout(request, 120);
 				sesjon.setAttribute("innloggetDeltager", d);
 				request.setAttribute("innloggetDeltager", d);
 				response.sendRedirect("deltagere");
-			}else {
+			} else {
 				response.sendRedirect("login?feilkode=2");
 			}
 		} catch (NoSuchAlgorithmException e) {

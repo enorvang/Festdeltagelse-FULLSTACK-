@@ -2,7 +2,6 @@ package servlets;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -14,7 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import eao.DeltagerEAO;
 import entities.Deltager;
-import utilities.Hashing;
+
 import utilities.HashingUtil;
 import utilities.InnloggingUtil;
 import utilities.RegistreringsSkjema;
@@ -66,7 +65,7 @@ public class PaameldingServlet extends HttpServlet {
 		if (!Validering.erAlleGyldige(rs)) {
 			response.sendRedirect("paamelding");
 		} else {
-			HttpSession sesjon = InnloggingUtil.loggInnMedTimeout(request, 12000);
+			HttpSession sesjon = InnloggingUtil.loggInnMedTimeout(request, 120);
 
 			HashingUtil hashing = new HashingUtil("SHA-256");
 			
@@ -77,7 +76,6 @@ public class PaameldingServlet extends HttpServlet {
 				e.printStackTrace();
 			}
 
-			
 			String passordHash = hashing.getPasswordHashinHex();
 			String passordSalt = hashing.getPasswordSalt();
 			

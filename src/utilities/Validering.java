@@ -1,11 +1,6 @@
 package utilities;
 
-import javax.ejb.EJB;
-
-import eao.DeltagerEAO;
-import entities.Deltager;
-
-public class Validering{
+public class Validering {
 
 	public static boolean erGyldigFornavn(String fornavn) {
 
@@ -24,12 +19,11 @@ public class Validering{
 
 		return mobil.matches("[0-9]{8}");
 	}
-	
+
 	public static boolean erUnikMobil(String mobil1, String mobil2) {
-		
+
 		return mobil1 != mobil2;
 	}
-	
 
 	public static boolean erLikePassord(String passord, String passordRepetert) {
 		return passord.contentEquals(passordRepetert);
@@ -38,12 +32,11 @@ public class Validering{
 	public static boolean erGyldigPassord(String passord) {
 		return passord.matches("^(?=.*[0-9])(?=.*[a-zæøå])(?=.*[A-ZØÆÅ])(?=.*[!@#$%^&+=])(?=\\S+$).{8,}$");
 	}
-	
 
 	public static boolean erGyldigKjonn(String kjonn) {
 		return kjonn != null && !kjonn.isEmpty();
 	}
-	
+
 	public static boolean erAlleGyldige(RegistreringsSkjema rs) {
 		boolean gyldigInput = true;
 		if (!erGyldigFornavn(rs.getFornavn())) {
@@ -70,7 +63,7 @@ public class Validering{
 		} else {
 			rs.setPassordFeil("");
 		}
-		if (!erLikePassord(rs.getPassord(), rs.getPassordRepetert())){
+		if (!erLikePassord(rs.getPassord(), rs.getPassordRepetert())) {
 			gyldigInput = false;
 			rs.setPassordFeil("Passordene samsvarer ikke");
 			rs.setPassordRepetertFeil("Passordene samsvarer ikke");

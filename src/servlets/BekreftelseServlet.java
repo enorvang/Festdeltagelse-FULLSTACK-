@@ -13,29 +13,24 @@ import entities.Deltager;
 /**
  * Servlet implementation class BekreftelseServlet
  */
-@WebServlet(name="Bekreftelse", urlPatterns="/bekreftelse")
+@WebServlet(name = "Bekreftelse", urlPatterns = "/bekreftelse")
 public class BekreftelseServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-   
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
 		HttpSession sesjon = request.getSession(false);
 		if (sesjon == null) {
-			//Ved forsøk på å gå direkte til bekreftelse uten å gå gjennom innloggingssiden
-			response.sendRedirect("login?feilkode=9"); //må fikse feilkode
+			// Ved forsøk på å gå direkte til bekreftelse uten å gå gjennom innloggingssiden
+			response.sendRedirect("login?feilkode=9"); // må fikse feilkode
 		} else {
-			
+
 			Deltager deltager = (Deltager) sesjon.getAttribute("innloggetDeltager");
 			request.setAttribute("deltager", deltager);
 			request.getRequestDispatcher("WEB-INF/jsp/paameldingsbekreftelse.jsp").forward(request, response);
 		}
-		
-		
-	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
 	}
 
 }
