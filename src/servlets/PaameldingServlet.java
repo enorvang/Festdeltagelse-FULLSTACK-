@@ -15,16 +15,16 @@ import javax.servlet.http.HttpSession;
 import eao.DeltagerEAO;
 import entities.Deltager;
 import utilities.Hashing;
+import utilities.HashingUtil;
 import utilities.InnloggingUtil;
 import utilities.RegistreringsSkjema;
 import utilities.Validering;
 
 @WebServlet(name = "Påmelding", urlPatterns = "/paamelding")
 public class PaameldingServlet extends HttpServlet {
-
 	private static final long serialVersionUID = 1L;
 	RegistreringsSkjema rs = new RegistreringsSkjema();
-
+	
 	@EJB
 	DeltagerEAO deltagerEAO;
 
@@ -33,10 +33,10 @@ public class PaameldingServlet extends HttpServlet {
 
 		String feilkode = request.getParameter("feilkode");
 		String feilmelding = "";
-		if(feilkode != null) {
-			if(feilkode.contentEquals("1")) {
+		if (feilkode != null) {
+			if (feilkode.contentEquals("1")) {
 				feilmelding = "Mobilnummeret er allerede registrert";
-				
+
 			}
 		}
 		request.setAttribute("feilmelding", feilmelding);
@@ -54,43 +54,43 @@ public class PaameldingServlet extends HttpServlet {
 		String passordRepetert = request.getParameter("passordRepetert");
 		String kjonn = request.getParameter("kjonn");
 
-		rs.setFornavn(request.getParameter("fornavn"));
-		rs.setEtternavn(request.getParameter("etternavn"));
-		rs.setMobil(request.getParameter("mobil"));
-		rs.setPassord(request.getParameter("passord"));
-		rs.setPassordRepetert(request.getParameter("passordRepetert"));
-		rs.setKjonn(request.getParameter("kjonn"));
-
-		// TODO MÅ OGSÅ SJEKKE AT MOBILNUMMERET IKKE FINNES I DATABASEN!
+		rs.setFornavn(fornavn);
+		rs.setEtternavn(etternavn);
+		rs.setMobil(mobil);
+		rs.setPassord(passord);
+		rs.setPassordRepetert(passordRepetert);
+		rs.setKjonn(kjonn);
 
 		if (!Validering.erAlleGyldige(rs)) {
 			response.sendRedirect("paamelding");
 		} else {
 			HttpSession sesjon = InnloggingUtil.loggInnMedTimeout(request, 12000);
 
+			HashingUtil hashing = new HashingUtil("SHA-256");
 			
-			//TODO generere passordsalt
-			// hashe inntastet passord
-			Hashing hash = new Hashing("SHA-256");
 			try {
-				hash.generateHashWithSalt(passord, hash.getSalt());
+				hashing.generateHashWithSalt(passord, hashing.generateSalt());
+				
 			} catch (NoSuchAlgorithmException e) {
 				e.printStackTrace();
 			}
-			String passordHash = hash.getPasswordHashinHex();
+
+			
+			String passordHash = hashing.getPasswordHashinHex();
+			String passordSalt = hashing.getPasswordSalt();
 			
 
-			Deltager d = new Deltager(fornavn, etternavn, mobil, passordHash, kjonn);
-			if (deltagerEAO.erMobilBrukt(d.getMobil())) {
+			if (deltagerEAO.erMobilBrukt(mobil)) {
 				response.sendRedirect("paamelding?feilkode=1");
 			} else {
+				Deltager d = new Deltager(fornavn, etternavn, mobil, passordHash, kjonn, passordSalt);
+
 				deltagerEAO.leggTilDeltager(d);
 				request.setAttribute("registreringsskjema", rs);
 				sesjon.setAttribute("deltager", d);
 				response.sendRedirect("bekreftelse");
 			}
 		}
-//	
 
 	}
 

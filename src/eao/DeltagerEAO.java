@@ -28,4 +28,8 @@ public class DeltagerEAO {
 	public boolean erMobilBrukt(String mobil) {
 		return em.find(Deltager.class, mobil) != null;
 	}
+	
+	public Deltager finnDeltagerMedMobil(String mobil) {
+		return em.find(Deltager.class, mobil);
+	}
 }

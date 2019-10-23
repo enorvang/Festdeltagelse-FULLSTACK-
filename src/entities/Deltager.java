@@ -3,6 +3,7 @@ package entities;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 
 @Entity
@@ -15,17 +16,19 @@ public class Deltager {
 	private String etternavn;
 	private String passordHash;
 	private String kjonn;
+	private String passordSalt;
 	
 	public Deltager() {
 		
 	}
 	
-	public Deltager(String fornavn, String etternavn, String mobil, String passordHash, String kjonn) {
+	public Deltager(String fornavn, String etternavn, String mobil, String passordHash, String kjonn, String passordSalt) {
 		this.fornavn = fornavn;
 		this.etternavn = etternavn;
 		this.mobil = mobil;
 		this.passordHash = passordHash;
 		this.kjonn = kjonn;
+		this.passordSalt = passordSalt;
 	}
 
 
@@ -59,12 +62,12 @@ public class Deltager {
 	}
 
 
-	public String getPassord() {
+	public String getPassordHash() {
 		return passordHash;
 	}
 
-	public void setPassord(String passord) {
-		this.passordHash = passord;
+	public void setPassordHash(String passordHash) {
+		this.passordHash = passordHash;
 	}
 
 	public String getKjonn() {
@@ -74,6 +77,14 @@ public class Deltager {
 
 	public void setKjonn(String kjonn) {
 		this.kjonn = kjonn;
+	}
+	
+	public void setPassordSalt(String passordSalt) {
+		this.passordSalt = passordSalt;
+	}
+	
+	public String getPassordSalt() {
+		return passordSalt;
 	}
 
 

@@ -15,7 +15,7 @@
 	<h1>Ferdig</h1>
 	<p>Du er nå logget ut.</p>
 	<p>
-		Du kan se deltagerlisten igjen ved å gå <a href="logginn">hit</a>.
+		Du kan se deltagerlisten igjen ved å gå <a href="login">hit</a>.
 	</p>
 </body>
 </html>

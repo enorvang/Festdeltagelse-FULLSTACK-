@@ -177,7 +177,7 @@ public class Hashing {
 
 			e.printStackTrace();
 		}
-
+		
 	    return salt;
 	}
 	
