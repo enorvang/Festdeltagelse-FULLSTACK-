@@ -14,30 +14,30 @@
 <body>
 	<h2>Påmelding</h2>
 	<font color="red">${feilmelding}<a href="login">${loginLink }</a></font>
-	<form method="post" class="pure-form pure-form-aligned">
+	<form id="form" method="post" class="pure-form pure-form-aligned">
 		<fieldset>
 			<div class="pure-control-group">
-				<label for="fornavn">Fornavn: </label> <input type="text"
+				<label for="fornavn">Fornavn: </label> <input id="fornavn" type="text"
 					name="fornavn" value="${registreringsskjema.fornavn }" /> 
 					<font color="red">${registreringsskjema.fornavnFeil}</font>
 			</div>
 			<div class="pure-control-group">
-				<label for="etternavn">Etternavn: </label> <input type="text"
+				<label for="etternavn">Etternavn: </label> <input id="etternavn" type="text"
 					name="etternavn" value="${registreringsskjema.etternavn }" /> 
 					<font color="red">${registreringsskjema.etternavnFeil}</font>
 			</div>
 			<div class="pure-control-group">
-				<label for="mobil">Mobil (8 siffer) :</label> <input type="text"
+				<label for="mobil">Mobil (8 siffer) :</label> <input id="mobil" type="text"
 					name="mobil" value="${registreringsskjema.mobil }" /> 
 					<font color="red">${registreringsskjema.mobilFeil}</font>
 			</div>
 			<div class="pure-control-group">
-				<label for="password">Passord:</label> <input type="password"
+				<label for="password">Passord:</label> <input id="passord" type="password"
 					name="passord" value="${registreringsskjema.passord }" /> 
 					<font color="red">${registreringsskjema.passordFeil}</font>
 			</div>
 			<div class="pure-control-group">
-				<label for="passordRepetert">Passord repetert:</label> <input
+				<label for="passordRepetert">Passord repetert:</label> <input id="passordRepetert"
 					type="password" name="passordRepetert"
 					value="${registreringsskjema.passordRepetert }" /> 
 					<font color="red">${registreringsskjema.passordRepetertFeil}</font>
@@ -56,5 +56,6 @@
 			</div>
 		</fieldset>
 	</form>
+<script src="validator.js"></script>
 </body>
 </html>
