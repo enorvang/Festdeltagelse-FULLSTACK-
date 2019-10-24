@@ -21,8 +21,18 @@ mobil.addEventListener("keyup", function() {
     validerFelt(mobil.value, regex);
 });
 
+
 passord.addEventListener("keyup", function() {
     validerPassord(passord.value);
+});
+
+let info = document.getElementById("info");
+passord.addEventListener('mouseover', function(){
+	info.style.visibility = "visible";
+});
+
+passord.addEventListener('mouseout', function(){
+	info.style.visibility = "hidden";
 });
 
 passordRepetert.addEventListener("keyup", function() {
