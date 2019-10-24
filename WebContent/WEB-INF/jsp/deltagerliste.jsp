@@ -24,15 +24,15 @@
 			<c:choose>
 				<c:when test="${deltager.mobil eq innloggetDeltager.mobil}">
 					<tr bgcolor="#aaffaa">
-						<td align="center">${deltager.kjonn = "kvinne" ? "&#9792;" : "&#9794;"}</td>
-						<td>${deltager.fornavn}${deltager.etternavn}</td>
+						<td align="center">${deltager.kjonn == "kvinne" ? "&#9792;" : "&#9794;"}</td>
+						<td>${deltager.fornavn} ${deltager.etternavn}</td>
 						<td>${deltager.mobil}</td>
 					</tr>
 				</c:when>
 				<c:otherwise>
 					<tr bgcolor="#ffffff">
-						<td align="center">${deltager.kjonn = "kvinne" ? "&#9792;" : "&#9794;"}</td>
-						<td>${deltager.fornavn}${deltager.etternavn}</td>
+						<td align="center">${deltager.kjonn == "kvinne" ? "&#9792;" : "&#9794;"}</td>
+						<td>${deltager.fornavn} ${deltager.etternavn}</td>
 						<td>${deltager.mobil}</td>
 					</tr>
 				</c:otherwise>
