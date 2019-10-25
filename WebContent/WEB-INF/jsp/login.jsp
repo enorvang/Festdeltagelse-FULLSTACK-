@@ -13,7 +13,7 @@
 </head>
 <body>
 	<h2>Logg inn</h2>
-	<p>Registrer deg<a href="paamelding">her</a></p>
+	<p>Ikke registrert? Bli med på festen <a href="paamelding">her</a></p>
 	<p>
 		<font color="red">${feilmelding }</font>
 	</p>

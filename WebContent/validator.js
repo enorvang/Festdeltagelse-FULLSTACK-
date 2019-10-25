@@ -3,30 +3,37 @@ let etternavn = document.getElementById("etternavn")
 let mobil = document.getElementById("mobil")
 let passord = document.getElementById("passord")
 let passordRepetert = document.getElementById("passordRepetert")
-let kjonn = document.getElementById("kjonn")
-let form = document.getElementById("form")
+let kjonn = document.getElementsByName("kjonn")
+let knapp = document.getElementById("paameldingsknapp")
+let info = document.getElementById("info");
+
+let gyldigFornavn = false;
+let gyldigEtternavn = false;
+let gyldigMobil = false;
+let gyldigPassord = false;
+let gyldigPassordRepetert = false;
+let gyldigKjonn = false;
 
 fornavn.addEventListener("keyup", function() {
     let regex = /^[A-ZÆØÅ][A-ZÆØÅa-zæøå -]{2,19}/;
-    validerFelt(fornavn.value, regex);
+    gyldigFornavn = validerFelt(fornavn.value, regex);
 });
 
 etternavn.addEventListener("keyup", function() {
     let regex = /^[A-ZÆØÅ][A-ZÆØÅa-zæøå-]{2,19}/;
-    validerFelt(etternavn.value, regex);
+    gyldigEtternavn = validerFelt(etternavn.value, regex);
 });
 
 mobil.addEventListener("keyup", function() {
     let regex = /[0-9]{8}/;
-    validerFelt(mobil.value, regex);
+    gyldigMobil = validerFelt(mobil.value, regex);
 });
 
 
 passord.addEventListener("keyup", function() {
-    validerPassord(passord.value);
+	let regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
+    gyldigPassord = validerPassord(passord.value, regex);
 });
-
-let info = document.getElementById("info");
 
 passord.addEventListener('mouseover', function(){
 	info.style.visibility = "visible";
@@ -39,26 +46,64 @@ passord.addEventListener('mouseout', function(){
 passordRepetert.addEventListener("keyup", function() {
     if(passordRepetert.value !== passord.value){
         event.target.style.borderColor="red";
+        gyldigPassordRepetert = false;
     }else{
         event.target.style.borderColor="green";
+        gyldigPassordRepetert = true;
     }
 });
 
-function validerFelt(input, regex){
-    if(!regex.test(input)){
-        event.target.style.borderColor="red";
-    }else{
-        event.target.style.borderColor="green";
-    }
+for(let i = 0; i < kjonn.length; i++){
+    kjonn[i].addEventListener("click", function(){
+        if (kjonn[i].value !== null){
+            gyldigKjonn = true;
+        }else{
+            gyldigKjonn = false;
+        }
+    });
 }
 
-function validerPassord(input){
-    let regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
+
+window.addEventListener('keyup', function () {
+	if (gyldigFornavn && gyldigEtternavn && gyldigMobil && gyldigPassord && gyldigPassordRepetert){
+        this.window.addEventListener("click", function(){
+            if(gyldigKjonn){
+                knapp.disabled = false;
+            }
+        })
+		
+	} else {
+		knapp.disabled = true;
+	}
+});
+
+function validerFelt(input, regex){
+	let validBool;
     if(!regex.test(input)){
         event.target.style.borderColor="red";
-    }else if(regex.test(input) && input.length < 10){
-        event.target.style.borderColor="yellow";
+        validBool = false;
     }else{
         event.target.style.borderColor="green";
+        validBool = true;
     }
+    return validBool;
 }
+
+function validerPassord(input, regex){
+    let validBool;
+    if(!regex.test(input)){
+        event.target.style.borderColor="red";
+        validBool = false;
+    }else if(regex.test(input) && input.length < 10){
+        event.target.style.borderColor="yellow";
+        validBool = true;
+    }else{
+        event.target.style.borderColor="green";
+        validBool = true;
+    }
+    return validBool;
+}
+
+
+
+

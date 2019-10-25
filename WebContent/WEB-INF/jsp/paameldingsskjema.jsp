@@ -52,7 +52,7 @@
 				<font color="red">${registreringsskjema.kjonnFeil}</font>
 			</div>
 			<div class="pure-controls">
-				<button type="submit" class="pure-button pure-button-primary">Meld
+				<button type="submit" class="pure-button pure-button-primary" id="paameldingsknapp" disabled>Meld
 					meg på</button>
 				<input type="button" class="pure-button pure-button-primary" onclick="location.href='login';" value="Logg inn" />
 			</div>
