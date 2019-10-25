@@ -29,13 +29,10 @@ mobil.addEventListener("keyup", function() {
 	gyldigMobil = validerFelt(mobil.value, regex);
 });
 
-passord
-		.addEventListener(
-				"keyup",
-				function() {
-					let regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
-					gyldigPassord = validerPassord(passord.value, regex);
-				});
+passord.addEventListener("keyup",function() {
+	let regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
+	gyldigPassord = validerPassord(passord.value, regex);
+});
 
 passord.addEventListener('mouseover', function() {
 	info.style.visibility = "visible";
