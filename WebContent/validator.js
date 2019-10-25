@@ -62,15 +62,17 @@ for (let i = 0; i < kjonn.length; i++) {
 	});
 }
 
-window.addEventListener('keyup', function() {
-	if (gyldigFornavn && gyldigEtternavn && gyldigMobil && gyldigPassord
-			&& gyldigPassordRepetert) {
-		this.window.addEventListener("click", function() {
-			if (gyldigKjonn) {
-				knapp.disabled = false;
-			}
-		})
-
+window.addEventListener('keyup', function () {
+	if (gyldigFornavn && gyldigEtternavn && gyldigMobil && gyldigPassord && gyldigPassordRepetert){
+        knapp.disabled = false;
+		
+	} else {
+		knapp.disabled = true;
+	}
+});
+window.addEventListener('click', function () {
+	if (gyldigFornavn && gyldigEtternavn && gyldigMobil && gyldigPassord && gyldigPassordRepetert && gyldigKjonn){
+        knapp.disabled = false;
 	} else {
 		knapp.disabled = true;
 	}
