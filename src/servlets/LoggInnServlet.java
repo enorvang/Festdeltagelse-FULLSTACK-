@@ -32,11 +32,14 @@ public class LoggInnServlet extends HttpServlet {
 		String feilkode = request.getParameter("feilkode");
 		String feilmelding = "";
 		if (feilkode != null) {
-			if (feilkode.contentEquals("2")) {
+			if(feilkode.contentEquals("1")) {
+				feilmelding = "Det er kun registrerte deltagere som får se deltagerlisten.";
+			}else if (feilkode.contentEquals("2")) {
 				feilmelding = "Ugyldig brukernavn og/eller passord";
 			}
 		}
 		request.setAttribute("feilmelding", feilmelding);
+		
 		request.getRequestDispatcher("WEB-INF/jsp/login.jsp").forward(request, response);
 	}
 

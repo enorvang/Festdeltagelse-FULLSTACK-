@@ -1,7 +1,6 @@
 package servlets;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,19 +26,18 @@ public class DeltagerlisteServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		HttpSession sesjon = request.getSession(false);
-		if (sesjon == null) {
-			response.sendRedirect("login");
+		Deltager innloggetDeltager = (Deltager) sesjon.getAttribute("innloggetDeltager");
+
+		if (sesjon == null || innloggetDeltager == null) {
+			response.sendRedirect("login?feilkode=1");
 		} else {
 
-			Deltager innloggetDeltager = (Deltager) sesjon.getAttribute("innloggetDeltager");
 			List<Deltager> deltagerliste = deltagerEAO.hentDeltagerliste();
-			List<Deltager> sortertListe = deltagerliste.stream().sorted((o1, o2) -> o1.getFornavn().compareTo(o2.getFornavn())).collect(Collectors.toList());
-			List<Deltager> sortertListe2 = deltagerliste.stream()
+			List<Deltager> sortertListe = deltagerliste.stream()
 					.sorted(Comparator.comparing(Deltager::getFornavn).thenComparing(Deltager::getEtternavn))
 					.collect(Collectors.toList());
-			
-		
-			request.setAttribute("deltagerliste", sortertListe2);
+
+			request.setAttribute("deltagerliste", sortertListe);
 			request.setAttribute("innloggetDeltager", innloggetDeltager);
 			request.getRequestDispatcher("WEB-INF/jsp/deltagerliste.jsp").forward(request, response);
 		}

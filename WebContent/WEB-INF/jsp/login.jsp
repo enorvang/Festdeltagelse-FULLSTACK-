@@ -13,7 +13,7 @@
 </head>
 <body>
 	<h2>Logg inn</h2>
-	<p>Det er kun registrerte deltagere som får se deltagerlisten.</p>
+	<p>Registrer deg<a href="paamelding">her</a></p>
 	<p>
 		<font color="red">${feilmelding }</font>
 	</p>

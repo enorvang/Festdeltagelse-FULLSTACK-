@@ -27,6 +27,7 @@ passord.addEventListener("keyup", function() {
 });
 
 let info = document.getElementById("info");
+
 passord.addEventListener('mouseover', function(){
 	info.style.visibility = "visible";
 });
