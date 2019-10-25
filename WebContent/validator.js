@@ -63,9 +63,8 @@ for (let i = 0; i < kjonn.length; i++) {
 }
 
 window.addEventListener('keyup', function () {
-	if (gyldigFornavn && gyldigEtternavn && gyldigMobil && gyldigPassord && gyldigPassordRepetert){
+	if (gyldigFornavn && gyldigEtternavn && gyldigMobil && gyldigPassord && gyldigPassordRepetert && gyldigKjonn){
         knapp.disabled = false;
-		
 	} else {
 		knapp.disabled = true;
 	}
