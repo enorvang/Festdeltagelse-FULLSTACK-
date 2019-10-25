@@ -9,6 +9,7 @@
 <!-- Fra https://purecss.io/ -->
 <link rel="stylesheet"
 	href="https://unpkg.com/purecss@1.0.0/build/pure-min.css">
+<link rel="stylesheet" href="style.css">
 <title>Påmelding</title>
 </head>
 <body>
@@ -33,7 +34,7 @@
 			</div>
 			<div class="pure-control-group">
 				<label for="password">Passord:</label> <input id="passord" type="password"
-					name="passord" value="${registreringsskjema.passord }" /> <span id="info" class="info">Passordlengde bør være mer lengre enn 10 tegn, og må inneholde minst et spesialtegn(!@#$%^*), en stor bokstav, en liten bokstav og et tall.</span> 
+					name="passord" value="${registreringsskjema.passord }" /> <span id="info" class="info">Passordet må inneholdet minst 8 tegn, og må inneholde minst et spesialtegn, en stor bokstav, en liten bokstav og et tall.</span> 
 					<font color="red">${registreringsskjema.passordFeil}</font>
 			</div>
 			<div class="pure-control-group">
