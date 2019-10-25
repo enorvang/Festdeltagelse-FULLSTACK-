@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE xml>
 <resources>
     <Resource id="DAT108LocalDS" name="DAT108LocalDS" type="javax.sql.DataSource">
 		jdbcDriver = org.postgresql.Driver
