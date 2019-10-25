@@ -5,7 +5,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
+
 
 import entities.Deltager;
 
@@ -19,10 +19,8 @@ public class DeltagerEAO {
 		em.persist(d);
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<Deltager> hentDeltagerliste() {
-		Query query = em.createQuery("SELECT d from Deltager d", Deltager.class);
-		return query.getResultList();
+		return em.createQuery("SELECT d from Deltager d", Deltager.class).getResultList();
 	}
 
 	public boolean erMobilBrukt(String mobil) {
