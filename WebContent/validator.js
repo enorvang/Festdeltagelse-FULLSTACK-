@@ -77,16 +77,16 @@ window.addEventListener('click', function () {
 	}
 });
 
-function validerFelt(input, regex) {
+function validerFelt(input, regex){
 	let validBool;
-	if (!regex.test(input)) {
-		event.target.style.borderColor = "red";
-		validBool = false;
-	} else {
-		event.target.style.borderColor = "green";
-		validBool = true;
-	}
-	return validBool;
+    if(!regex.test(input)){
+        event.target.style.backgroundColor="red";
+        validBool = false;
+    }else{
+        event.target.style.backgroundColor="green";
+        validBool = true;
+    }
+    return validBool;
 }
 
 function validerPassord(input, regex) {
