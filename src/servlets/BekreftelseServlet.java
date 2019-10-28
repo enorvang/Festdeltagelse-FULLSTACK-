@@ -23,7 +23,7 @@ public class BekreftelseServlet extends HttpServlet {
 		HttpSession sesjon = request.getSession(false);
 		if (sesjon == null) {
 			// Ved forsøk på å gå direkte til bekreftelse uten å gå gjennom innloggingssiden
-			response.sendRedirect("login?feilkode=9"); // må fikse feilkode
+			response.sendRedirect("login?feilkode=1"); // feilkode=1: "Du må logge inn for å se deltagerlisten"
 		} else {
 
 			Deltager deltager = (Deltager) sesjon.getAttribute("innloggetDeltager");

@@ -32,14 +32,15 @@ public class LoggInnServlet extends HttpServlet {
 		String feilkode = request.getParameter("feilkode");
 		String feilmelding = "";
 		if (feilkode != null) {
-			if(feilkode.contentEquals("1")) {
-				feilmelding = "Det er kun registrerte deltagere som får se deltagerlisten.";
-			}else if (feilkode.contentEquals("2")) {
+			if (feilkode.contentEquals("1")) {
+				feilmelding = "Du må logge inn for å se deltagerlisten";
+			} else if (feilkode.contentEquals("2")) {
 				feilmelding = "Ugyldig brukernavn og/eller passord";
 			}
 		}
+
 		request.setAttribute("feilmelding", feilmelding);
-		
+
 		request.getRequestDispatcher("WEB-INF/jsp/login.jsp").forward(request, response);
 	}
 
@@ -54,11 +55,11 @@ public class LoggInnServlet extends HttpServlet {
 		String mobil = request.getParameter("mobil");
 		String passord = request.getParameter("passord");
 
-		Deltager d = deltagerEAO.finnDeltagerMedMobil(mobil);
+		
 
 		try {
+			Deltager d = deltagerEAO.finnDeltagerMedMobil(mobil);
 			if (hashing.validatePasswordWithSalt(passord, d.getPassordSalt(), d.getPassordHash())) {
-
 				sesjon = InnloggingUtil.loggInnMedTimeout(request, 120);
 				sesjon.setAttribute("innloggetDeltager", d);
 				request.setAttribute("innloggetDeltager", d);
@@ -67,9 +68,11 @@ public class LoggInnServlet extends HttpServlet {
 				response.sendRedirect("login?feilkode=2");
 			}
 		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (NullPointerException e) {
+			response.sendRedirect("login?feilkode=2");
 		}
+
 	}
 
 }

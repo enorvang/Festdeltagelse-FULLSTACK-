@@ -32,12 +32,12 @@ public class DeltagerlisteServlet extends HttpServlet {
 			response.sendRedirect("login?feilkode=1");
 		} else {
 
-			List<Deltager> deltagerliste = deltagerEAO.hentDeltagerliste();
-			List<Deltager> sortertListe = deltagerliste.stream()
+			List<Deltager> deltagerliste = deltagerEAO.hentDeltagerliste()
+					.stream()
 					.sorted(Comparator.comparing(Deltager::getFornavn).thenComparing(Deltager::getEtternavn))
 					.collect(Collectors.toList());
 
-			request.setAttribute("deltagerliste", sortertListe);
+			request.setAttribute("deltagerliste", deltagerliste);
 			request.setAttribute("innloggetDeltager", innloggetDeltager);
 			request.getRequestDispatcher("WEB-INF/jsp/deltagerliste.jsp").forward(request, response);
 		}
