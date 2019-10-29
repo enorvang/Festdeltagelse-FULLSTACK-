@@ -80,10 +80,10 @@ window.addEventListener('click', function () {
 function validerFelt(input, regex){
 	let validBool;
     if(!regex.test(input)){
-        event.target.style.backgroundColor="red";
+        event.target.style.borderColor="red";
         validBool = false;
     }else{
-        event.target.style.backgroundColor="green";
+        event.target.style.borderColor="green";
         validBool = true;
     }
     return validBool;
@@ -95,7 +95,7 @@ function validerPassord(input, regex) {
 	if (!regex.test(input)) {
 		event.target.style.borderColor = "red";
 		validBool = false;
-	} else if (regex.test(input) && input.length < 10) {
+	} else if (regex.test(input) && input.length <= 11) {
 		event.target.style.borderColor = "yellow";
 		validBool = true;
 	} else {
