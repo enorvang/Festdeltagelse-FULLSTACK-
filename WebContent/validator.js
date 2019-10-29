@@ -47,7 +47,7 @@ passordRepetert.addEventListener("keyup", function() {
 		event.target.style.borderColor = "red";
 		gyldigPassordRepetert = false;
 	} else {
-		event.target.style.borderColor = "green";
+		event.target.style.borderColor = "#14df14";
 		gyldigPassordRepetert = true;
 	}
 });
@@ -83,7 +83,7 @@ function validerFelt(input, regex){
         event.target.style.borderColor="red";
         validBool = false;
     }else{
-        event.target.style.borderColor="green";
+        event.target.style.borderColor="#14df14";
         validBool = true;
     }
     return validBool;
@@ -99,7 +99,7 @@ function validerPassord(input, regex) {
 		event.target.style.borderColor = "yellow";
 		validBool = true;
 	} else {
-		event.target.style.borderColor = "green";
+		event.target.style.borderColor = "#14df14";
 		validBool = true;
 	}
 	return validBool;
