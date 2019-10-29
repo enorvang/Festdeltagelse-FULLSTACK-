@@ -1,2 +1,2 @@
 # Festdeltagelse-FULLSTACK-
-MVC(jsp, Servlets), JavaScript, JPA
+MVC (jsp, Servlets), JavaScript, JPA
