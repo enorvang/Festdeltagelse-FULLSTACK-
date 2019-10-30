@@ -31,7 +31,7 @@ mobil.addEventListener("keyup", function() {
 
 
 passord.addEventListener("keyup", function() {
-	let regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
+	let regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     gyldigPassord = validerPassord(passord.value, regex);
 });
 
