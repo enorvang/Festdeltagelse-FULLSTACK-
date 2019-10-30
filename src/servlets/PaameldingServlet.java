@@ -29,7 +29,6 @@ public class PaameldingServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		
 		String feilkode = request.getParameter("feilkode");
 		String feilmelding = "";
 
@@ -41,15 +40,18 @@ public class PaameldingServlet extends HttpServlet {
 		RegistreringsSkjema rs = null;
 		HttpSession sesjon = request.getSession(false);
 
-		if(sesjon == null) {
+		if (sesjon == null) {
 			sesjon = request.getSession(true);
 			rs = new RegistreringsSkjema();
-		}else {
+		} else {
 			rs = (RegistreringsSkjema) sesjon.getAttribute("registreringsskjema");
 		}
-			
+
+		if (rs != null) {
+			System.out.println("I doGet(...): " + rs.toString());
+		}
 		request.setAttribute("feilmelding", feilmelding);
-		request.setAttribute("registreringsskjema", rs);
+//		request.setAttribute("registreringsskjema", rs);
 		sesjon.setAttribute("registreringsskjema", rs);
 
 		request.getRequestDispatcher("WEB-INF/jsp/paameldingsskjema.jsp").forward(request, response);
@@ -68,7 +70,8 @@ public class PaameldingServlet extends HttpServlet {
 		HttpSession sesjon = request.getSession(false);
 		if (sesjon != null) {
 			RegistreringsSkjema rs = (RegistreringsSkjema) sesjon.getAttribute("registreringsskjema");
-
+			
+			
 			rs.setFornavn(fornavn);
 			rs.setEtternavn(etternavn);
 			rs.setMobil(mobil);
@@ -100,6 +103,8 @@ public class PaameldingServlet extends HttpServlet {
 					Deltager d = new Deltager(fornavn, etternavn, mobil, passordHash, kjonn, passordSalt);
 
 					deltagerEAO.leggTilDeltager(d);
+//				request.setAttribute("registreringsskjema", rs);
+					sesjon.setAttribute("registreringsskjema", rs);
 					sesjon.setAttribute("innloggetDeltager", d);
 					response.sendRedirect("bekreftelse");
 
