@@ -14,25 +14,39 @@ let gyldigPassord = false;
 let gyldigPassordRepetert = false;
 let gyldigKjonn = false;
 
+let fornavnRegex = /^[A-ZÆØÅ][A-ZÆØÅa-zæøå -]{2,19}$/;
+let etternavnRegex = /^[A-ZÆØÅ][A-ZÆØÅa-zæøå-]{2,19}$/;
+let mobilRegex = /^[0-9]{8}$/;
+let passordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+
+
 fornavn.addEventListener("keyup", function() {
-    let regex = /^[A-ZÆØÅ][A-ZÆØÅa-zæøå -]{2,19}$/;
-    gyldigFornavn = validerFelt(fornavn.value, regex);
+    gyldigFornavn = validerFelt(fornavn, fornavnRegex);
+});
+
+fornavn.addEventListener("blur", function(){
+    gyldigFornavn = validerFelt(fornavn, fornavnRegex);
 });
 
 etternavn.addEventListener("keyup", function() {
-    let regex = /^[A-ZÆØÅ][A-ZÆØÅa-zæøå-]{2,19}$/;
-    gyldigEtternavn = validerFelt(etternavn.value, regex);
+    gyldigEtternavn = validerFelt(etternavn, etternavnRegex);
+});
+
+etternavn.addEventListener("blur", function() {
+    gyldigEtternavn = validerFelt(etternavn, etternavnRegex);
 });
 
 mobil.addEventListener("keyup", function() {
-    let regex = /^[0-9]{8}$/;
-    gyldigMobil = validerFelt(mobil.value, regex);
+    gyldigMobil = validerFelt(mobil, mobilRegex);
 });
 
+mobil.addEventListener("blur", function() {
+    gyldigMobil = validerFelt(mobil, mobilRegex);
+});
 
 passord.addEventListener("keyup", function() {
-    let regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    gyldigPassord = validerPassord(passord.value, regex);
+    gyldigPassord = validerPassord(passord.value, passordRegex);
 });
 
 passord.addEventListener('mouseover', function(){
@@ -43,17 +57,13 @@ passord.addEventListener('mouseout', function(){
 	info.style.visibility = "hidden";
 });
 
-passordRepetert.addEventListener("keyup", function() {
-    if((passordRepetert.value === null && passord.value === null) || (passordRepetert.value === "" && passord.value === "")){
-        event.target.style.borderColor="#ddd";
-    }
-    else if(passordRepetert.value !== passord.value){
-        event.target.style.borderColor="red";
-        gyldigPassordRepetert = false;
-    }else{
-        event.target.style.borderColor="#14df14";
-        gyldigPassordRepetert = true;
-    }
+
+passordRepetert.addEventListener("keyup", function(){
+    validerPassordRepetert(passordRepetert);
+});
+
+passordRepetert.addEventListener("blur", function(){
+    validerPassordRepetert(passordRepetert);
 });
 
 for(let i = 0; i < kjonn.length; i++){
@@ -82,11 +92,16 @@ window.addEventListener('click', function () {
 	}
 });
 */
+
 function validerFelt(input, regex){
     let validBool;
-    if(input === null || input === ""){
-        event.target.style.borderColor="#ddd";
-    }else if(!regex.test(input)){
+    if(input.value === null || input.value === ""){
+        if(document.activeElement === input){
+            event.target.style.borderColor="#129FEA";
+        }else{
+            event.target.style.borderColor="#ddd";
+        }
+    }else if(!regex.test(input.value)){
         event.target.style.borderColor="red";
         validBool = false;
     }else{
@@ -95,6 +110,7 @@ function validerFelt(input, regex){
     }
     return validBool;
 }
+
 
 
 function validerPassord(input, regex){
@@ -112,4 +128,21 @@ function validerPassord(input, regex){
         validBool = true;
     }
     return validBool;
+}
+
+function validerPassordRepetert(input){
+    if((input.value === null && passord.value === null) || (input.value === "" && passord.value === "")){
+        if (input === document.activeElement){
+            event.target.style.borderColor="#129FEA";
+        }else{
+            event.target.style.borderColor="#ddd";
+        }
+        gyldigPassordRepetert = false;
+    }else if(input.value !== passord.value){
+        event.target.style.borderColor="red";
+        gyldigPassordRepetert = false;
+    }else{
+        event.target.style.borderColor="#14df14";
+        gyldigPassordRepetert = true;
+    }
 }
