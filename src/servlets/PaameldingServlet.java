@@ -22,33 +22,48 @@ import utilities.Validering;
 @WebServlet(name = "Påmelding", urlPatterns = "/paamelding")
 public class PaameldingServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	HashingUtil hashing = new HashingUtil("SHA-256");
-	RegistreringsSkjema rs = new RegistreringsSkjema();
 
 	@EJB
 	DeltagerEAO deltagerEAO;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
+		
+		RegistreringsSkjema rs = null;
+		HttpSession sesjon;
 		String feilkode = request.getParameter("feilkode");
 		String feilmelding = "";
+		
 		if (feilkode != null) {
 			if (feilkode.contentEquals("1")) {
 				feilmelding = "Mobilnummeret er allerede registrert. Logg inn i stedet.";
 			}
 		}
-		request.setAttribute("feilmelding", feilmelding);
 
-		String gyldigData = (String) request.getAttribute("gyldigData");
-		if (gyldigData != null) {
-			if (gyldigData.equals("false")) {
-				request.setAttribute("registreringsskjema", rs);
+		if(!InnloggingUtil.erInnlogget(request)) {
+			sesjon = request.getSession(true);
+			rs = new RegistreringsSkjema();	
+		}else {
+			sesjon = request.getSession(false);
+			if (sesjon != null) {
+				rs = (RegistreringsSkjema) sesjon.getAttribute("registreringsskjema");
 			}
-		} else {
-			rs = new RegistreringsSkjema();
-			request.setAttribute("registreringsskjema", rs);
 		}
+		
+		
+		
+		request.setAttribute("feilmelding", feilmelding);
+		sesjon.setAttribute("registreringsskjema", rs);
+
+//		String gyldigData = (String) request.getAttribute("gyldigData");
+//		if (gyldigData != null) {
+//			if (gyldigData.equals("false")) {
+//				request.setAttribute("registreringsskjema", rs);
+//			}
+//		} else {
+//			rs = new RegistreringsSkjema();
+//			request.setAttribute("registreringsskjema", rs);
+//		}
 
 		request.getRequestDispatcher("WEB-INF/jsp/paameldingsskjema.jsp").forward(request, response);
 	}
@@ -62,6 +77,13 @@ public class PaameldingServlet extends HttpServlet {
 		String passord = request.getParameter("passord");
 		String passordRepetert = request.getParameter("passordRepetert");
 		String kjonn = request.getParameter("kjonn");
+		
+		RegistreringsSkjema rs = null;
+		
+		HttpSession sesjon = request.getSession(false);
+		if(sesjon != null) {
+			rs = (RegistreringsSkjema) sesjon.getAttribute("registreringsskjema");
+		}
 
 		rs.setFornavn(fornavn);
 		rs.setEtternavn(etternavn);
@@ -71,11 +93,13 @@ public class PaameldingServlet extends HttpServlet {
 		rs.setKjonn(kjonn);
 
 		if (!Validering.erAlleGyldige(rs)) {
-			request.setAttribute("gyldigData", "false");
+//			request.setAttribute("gyldigData", "false");
+			sesjon.setAttribute("registreringsskjema", rs);
 			response.sendRedirect("paamelding");
+			
 		} else {
-			HttpSession sesjon = InnloggingUtil.loggInnMedTimeout(request, 120);
-
+			sesjon = InnloggingUtil.loggInnMedTimeout(request, 120);
+			HashingUtil hashing = new HashingUtil("SHA-256");
 			try {
 				hashing.generateHashWithSalt(passord, hashing.generateSalt());
 
@@ -92,7 +116,8 @@ public class PaameldingServlet extends HttpServlet {
 				Deltager d = new Deltager(fornavn, etternavn, mobil, passordHash, kjonn, passordSalt);
 
 				deltagerEAO.leggTilDeltager(d);
-				request.setAttribute("registreringsskjema", rs);
+//				request.setAttribute("registreringsskjema", rs);
+//				sesjon.setAttribute("registreringsskjema", rs);
 				sesjon.setAttribute("innloggetDeltager", d);
 				response.sendRedirect("bekreftelse");
 
