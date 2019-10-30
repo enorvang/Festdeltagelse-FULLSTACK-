@@ -65,7 +65,7 @@ for(let i = 0; i < kjonn.length; i++){
         }
     });
 }
-
+/*
 window.addEventListener('keyup', function () {
 	if (gyldigFornavn && gyldigEtternavn && gyldigMobil && gyldigPassord && gyldigPassordRepetert && gyldigKjonn){
         knapp.disabled = false;
@@ -81,7 +81,7 @@ window.addEventListener('click', function () {
 		knapp.disabled = true;
 	}
 });
-
+*/
 function validerFelt(input, regex){
     let validBool;
     if(input === null || input === ""){

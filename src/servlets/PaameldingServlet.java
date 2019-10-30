@@ -28,42 +28,49 @@ public class PaameldingServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
 		
-		RegistreringsSkjema rs = null;
-		HttpSession sesjon;
 		String feilkode = request.getParameter("feilkode");
 		String feilmelding = "";
-		
+
 		if (feilkode != null) {
 			if (feilkode.contentEquals("1")) {
 				feilmelding = "Mobilnummeret er allerede registrert. Logg inn i stedet.";
 			}
 		}
+		RegistreringsSkjema rs = null;
+		HttpSession sesjon = request.getSession(false);
 
-		if(!InnloggingUtil.erInnlogget(request)) {
+		if(sesjon == null) {
 			sesjon = request.getSession(true);
-			rs = new RegistreringsSkjema();	
+			rs = new RegistreringsSkjema();
 		}else {
-			sesjon = request.getSession(false);
-			if (sesjon != null) {
-				rs = (RegistreringsSkjema) sesjon.getAttribute("registreringsskjema");
-			}
+			rs = (RegistreringsSkjema) sesjon.getAttribute("registreringsskjema");
 		}
 		
-		
-		
-		request.setAttribute("feilmelding", feilmelding);
-		sesjon.setAttribute("registreringsskjema", rs);
-
-//		String gyldigData = (String) request.getAttribute("gyldigData");
-//		if (gyldigData != null) {
-//			if (gyldigData.equals("false")) {
-//				request.setAttribute("registreringsskjema", rs);
-//			}
-//		} else {
+//		if (!InnloggingUtil.erInnlogget(request)) {
+//			sesjon = request.getSession(true);
 //			rs = new RegistreringsSkjema();
-//			request.setAttribute("registreringsskjema", rs);
+//		} else {
+//			sesjon = request.getSession(false);
+//			rs = (RegistreringsSkjema) sesjon.getAttribute("registreringsskjema");
 //		}
+		
+		/*
+		 RegistreringsSkjema rs;
+		HttpSession sesjon = request.getSession(false);
+		if(sesjon != null) {
+			rs = (RegistreringsSkjema) sesjon.getAttribute("registreringsskjema");
+		}else {
+			sesjon = request.getSession(true);
+			rs = new RegistreringsSkjema();
+			
+		}
+		*/
+		System.out.println("I doGet(...): " + rs.toString());	
+		request.setAttribute("feilmelding", feilmelding);
+		request.setAttribute("registreringsskjema", rs);
+		sesjon.setAttribute("registreringsskjema", rs);
 
 		request.getRequestDispatcher("WEB-INF/jsp/paameldingsskjema.jsp").forward(request, response);
 	}
@@ -77,53 +84,50 @@ public class PaameldingServlet extends HttpServlet {
 		String passord = request.getParameter("passord");
 		String passordRepetert = request.getParameter("passordRepetert");
 		String kjonn = request.getParameter("kjonn");
-		
-		RegistreringsSkjema rs = null;
-		
+
 		HttpSession sesjon = request.getSession(false);
-		if(sesjon != null) {
-			rs = (RegistreringsSkjema) sesjon.getAttribute("registreringsskjema");
-		}
+		if (sesjon != null) {
+			RegistreringsSkjema rs = (RegistreringsSkjema) sesjon.getAttribute("registreringsskjema");
 
-		rs.setFornavn(fornavn);
-		rs.setEtternavn(etternavn);
-		rs.setMobil(mobil);
-		rs.setPassord(passord);
-		rs.setPassordRepetert(passordRepetert);
-		rs.setKjonn(kjonn);
+			rs.setFornavn(fornavn);
+			rs.setEtternavn(etternavn);
+			rs.setMobil(mobil);
+			rs.setPassord(passord);
+			rs.setPassordRepetert(passordRepetert);
+			rs.setKjonn(kjonn);
 
-		if (!Validering.erAlleGyldige(rs)) {
-//			request.setAttribute("gyldigData", "false");
-			sesjon.setAttribute("registreringsskjema", rs);
-			response.sendRedirect("paamelding");
-			
-		} else {
-			sesjon = InnloggingUtil.loggInnMedTimeout(request, 120);
-			HashingUtil hashing = new HashingUtil("SHA-256");
-			try {
-				hashing.generateHashWithSalt(passord, hashing.generateSalt());
+			if (!Validering.erAlleGyldige(rs)) {
+				sesjon.setAttribute("registreringsskjema", rs);
+				System.out.println("I doPost(...): " + rs.toString());
+				response.sendRedirect("paamelding");
 
-			} catch (NoSuchAlgorithmException e) {
-				e.printStackTrace();
-			}
-
-			String passordHash = hashing.getPasswordHashinHex();
-			String passordSalt = hashing.getPasswordSalt();
-
-			if (deltagerEAO.erMobilBrukt(mobil)) {
-				response.sendRedirect("paamelding?feilkode=1");
 			} else {
-				Deltager d = new Deltager(fornavn, etternavn, mobil, passordHash, kjonn, passordSalt);
+				sesjon = InnloggingUtil.loggInnMedTimeout(request, 120);
+				HashingUtil hashing = new HashingUtil("SHA-256");
+				try {
+					hashing.generateHashWithSalt(passord, hashing.generateSalt());
 
-				deltagerEAO.leggTilDeltager(d);
+				} catch (NoSuchAlgorithmException e) {
+					e.printStackTrace();
+				}
+
+				String passordHash = hashing.getPasswordHashinHex();
+				String passordSalt = hashing.getPasswordSalt();
+
+				if (deltagerEAO.erMobilBrukt(mobil)) {
+					response.sendRedirect("paamelding?feilkode=1");
+				} else {
+					Deltager d = new Deltager(fornavn, etternavn, mobil, passordHash, kjonn, passordSalt);
+
+					deltagerEAO.leggTilDeltager(d);
 //				request.setAttribute("registreringsskjema", rs);
-//				sesjon.setAttribute("registreringsskjema", rs);
-				sesjon.setAttribute("innloggetDeltager", d);
-				response.sendRedirect("bekreftelse");
+//					sesjon.setAttribute("registreringsskjema", rs);
+					sesjon.setAttribute("innloggetDeltager", d);
+					response.sendRedirect("bekreftelse");
 
+				}
 			}
 		}
-
 	}
 
 }

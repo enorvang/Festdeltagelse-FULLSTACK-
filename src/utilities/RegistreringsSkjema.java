@@ -89,7 +89,13 @@ public class RegistreringsSkjema {
 	public void setKjonn(String kjonn) {
 		this.kjonn = kjonn;
 	}
+	@Override
 	public String toString() {
-		return fornavn + etternavn;
+		return "RegistreringsSkjema [fornavn=" + fornavn + ", fornavnFeil=" + fornavnFeil + ", etternavn=" + etternavn
+				+ ", etternavnFeil=" + etternavnFeil + ", mobil=" + mobil + ", mobilFeil=" + mobilFeil + ", passord="
+				+ passord + ", passordFeil=" + passordFeil + ", passordRepetert=" + passordRepetert
+				+ ", passordRepetertFeil=" + passordRepetertFeil + ", kjonn=" + kjonn + ", kjonnFeil=" + kjonnFeil
+				+ "]";
 	}
+	
 }
