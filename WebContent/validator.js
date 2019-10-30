@@ -45,7 +45,7 @@ passord.addEventListener('mouseout', function(){
 
 passordRepetert.addEventListener("keyup", function() {
     if((passordRepetert.value === null && passord.value === null) || (passordRepetert.value === "" && passord.value === "")){
-        event.target.style.borderColor="initial";
+        event.target.style.borderColor="#ddd";
     }
     else if(passordRepetert.value !== passord.value){
         event.target.style.borderColor="red";
@@ -85,7 +85,7 @@ window.addEventListener('click', function () {
 function validerFelt(input, regex){
     let validBool;
     if(input === null || input === ""){
-        event.target.style.borderColor="initial";
+        event.target.style.borderColor="#ddd";
     }else if(!regex.test(input)){
         event.target.style.borderColor="red";
         validBool = false;
@@ -100,7 +100,7 @@ function validerFelt(input, regex){
 function validerPassord(input, regex){
     let validBool;
     if(input === null || input === ""){
-        event.target.style.borderColor="initial";
+        event.target.style.borderColor="#ddd";
     }else if(!regex.test(input)){
         event.target.style.borderColor="red";
         validBool = false;
