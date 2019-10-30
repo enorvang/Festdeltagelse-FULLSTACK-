@@ -47,10 +47,10 @@ public class LoggInnServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		HttpSession sesjon = request.getSession(false);
-		if (sesjon == null) {
-			response.sendRedirect("login");
-		}
+//		HttpSession sesjon = request.getSession(false);
+//		if (sesjon == null) {
+//			response.sendRedirect("login");
+//		}
 
 		String mobil = request.getParameter("mobil");
 		String passord = request.getParameter("passord");
@@ -60,7 +60,7 @@ public class LoggInnServlet extends HttpServlet {
 		try {
 			Deltager d = deltagerEAO.finnDeltagerMedMobil(mobil);
 			if (hashing.validatePasswordWithSalt(passord, d.getPassordSalt(), d.getPassordHash())) {
-				sesjon = InnloggingUtil.loggInnMedTimeout(request, 120);
+				HttpSession sesjon = InnloggingUtil.loggInnMedTimeout(request, 120);
 				sesjon.setAttribute("innloggetDeltager", d);
 				request.setAttribute("innloggetDeltager", d);
 				response.sendRedirect("deltagere");

@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 
 import eao.DeltagerEAO;
 import entities.Deltager;
+import utilities.InnloggingUtil;
 
 @WebServlet(name = "Deltagerliste", urlPatterns = "/deltagere")
 public class DeltagerlisteServlet extends HttpServlet {
@@ -25,13 +26,14 @@ public class DeltagerlisteServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		HttpSession sesjon = request.getSession(false);
-		Deltager innloggetDeltager = (Deltager) sesjon.getAttribute("innloggetDeltager");
+		
+		
 
-		if (sesjon == null || innloggetDeltager == null) {
+		if (!InnloggingUtil.erInnlogget(request)) {
 			response.sendRedirect("login?feilkode=1");
-		} else {
-
+		}else {
+			HttpSession sesjon = request.getSession(false);
+			Deltager innloggetDeltager = (Deltager) sesjon.getAttribute("innloggetDeltager");
 			List<Deltager> deltagerliste = deltagerEAO.hentDeltagerliste()
 					.stream()
 					.sorted(Comparator.comparing(Deltager::getFornavn).thenComparing(Deltager::getEtternavn))
