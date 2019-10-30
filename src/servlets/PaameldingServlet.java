@@ -33,15 +33,12 @@ public class PaameldingServlet extends HttpServlet {
 
 		String feilkode = request.getParameter("feilkode");
 		String feilmelding = "";
-		String loginLink = "";
 		if (feilkode != null) {
 			if (feilkode.contentEquals("1")) {
-				feilmelding = "Mobilnummeret er allerede registrert. ";
-				loginLink = "Logg inn";
+				feilmelding = "Mobilnummeret er allerede registrert. Logg inn i stedet.";
 			}
 		}
 		request.setAttribute("feilmelding", feilmelding);
-		request.setAttribute("loginLink", loginLink);
 
 		String test = (String) request.getAttribute("test");
 		if (test != null) {
