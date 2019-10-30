@@ -40,9 +40,9 @@ public class PaameldingServlet extends HttpServlet {
 		}
 		request.setAttribute("feilmelding", feilmelding);
 
-		String test = (String) request.getAttribute("test");
-		if (test != null) {
-			if (test.equals("ja")) {
+		String gyldigData = (String) request.getAttribute("gyldigData");
+		if (gyldigData != null) {
+			if (gyldigData.equals("false")) {
 				request.setAttribute("registreringsskjema", rs);
 			} 
 		}else {
@@ -71,7 +71,7 @@ public class PaameldingServlet extends HttpServlet {
 		rs.setKjonn(kjonn);
 
 		if (!Validering.erAlleGyldige(rs)) {
-			request.setAttribute("test", "ja");
+			request.setAttribute("gyldigData", "false");
 			response.sendRedirect("paamelding");
 		} else {
 			HttpSession sesjon = InnloggingUtil.loggInnMedTimeout(request, 120);
