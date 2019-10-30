@@ -31,7 +31,7 @@ mobil.addEventListener("keyup", function() {
 
 
 passord.addEventListener("keyup", function() {
-	let regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    let regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     gyldigPassord = validerPassord(passord.value, regex);
 });
 
@@ -83,8 +83,10 @@ window.addEventListener('click', function () {
 });
 
 function validerFelt(input, regex){
-	let validBool;
-    if(!regex.test(input)){
+    let validBool;
+    if(input === null || input === ""){
+        event.target.style.borderColor="initial";
+    }else if(!regex.test(input)){
         event.target.style.borderColor="red";
         validBool = false;
     }else{
@@ -97,7 +99,9 @@ function validerFelt(input, regex){
 
 function validerPassord(input, regex){
     let validBool;
-    if(!regex.test(input)){
+    if(input === null || input === ""){
+        event.target.style.borderColor="initial";
+    }else if(!regex.test(input)){
         event.target.style.borderColor="red";
         validBool = false;
     }else if(regex.test(input) && input.length < 10){
