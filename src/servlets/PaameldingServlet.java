@@ -47,27 +47,7 @@ public class PaameldingServlet extends HttpServlet {
 		}else {
 			rs = (RegistreringsSkjema) sesjon.getAttribute("registreringsskjema");
 		}
-		
-//		if (!InnloggingUtil.erInnlogget(request)) {
-//			sesjon = request.getSession(true);
-//			rs = new RegistreringsSkjema();
-//		} else {
-//			sesjon = request.getSession(false);
-//			rs = (RegistreringsSkjema) sesjon.getAttribute("registreringsskjema");
-//		}
-		
-		/*
-		 RegistreringsSkjema rs;
-		HttpSession sesjon = request.getSession(false);
-		if(sesjon != null) {
-			rs = (RegistreringsSkjema) sesjon.getAttribute("registreringsskjema");
-		}else {
-			sesjon = request.getSession(true);
-			rs = new RegistreringsSkjema();
 			
-		}
-		*/
-		System.out.println("I doGet(...): " + rs.toString());	
 		request.setAttribute("feilmelding", feilmelding);
 		request.setAttribute("registreringsskjema", rs);
 		sesjon.setAttribute("registreringsskjema", rs);
@@ -120,8 +100,6 @@ public class PaameldingServlet extends HttpServlet {
 					Deltager d = new Deltager(fornavn, etternavn, mobil, passordHash, kjonn, passordSalt);
 
 					deltagerEAO.leggTilDeltager(d);
-//				request.setAttribute("registreringsskjema", rs);
-//					sesjon.setAttribute("registreringsskjema", rs);
 					sesjon.setAttribute("innloggetDeltager", d);
 					response.sendRedirect("bekreftelse");
 
