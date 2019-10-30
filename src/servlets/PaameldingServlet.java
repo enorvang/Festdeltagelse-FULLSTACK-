@@ -22,8 +22,9 @@ import utilities.Validering;
 @WebServlet(name = "Påmelding", urlPatterns = "/paamelding")
 public class PaameldingServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	HashingUtil hashing = new HashingUtil("SHA-256");
 	RegistreringsSkjema rs = new RegistreringsSkjema();
-	
+
 	@EJB
 	DeltagerEAO deltagerEAO;
 
@@ -41,7 +42,17 @@ public class PaameldingServlet extends HttpServlet {
 		}
 		request.setAttribute("feilmelding", feilmelding);
 		request.setAttribute("loginLink", loginLink);
-		request.setAttribute("registreringsskjema", rs);
+
+		String test = (String) request.getAttribute("test");
+		if (test != null) {
+			if (test.equals("ja")) {
+				request.setAttribute("registreringsskjema", rs);
+			} 
+		}else {
+			rs = new RegistreringsSkjema();
+			request.setAttribute("registreringsskjema", rs);
+		}
+
 		request.getRequestDispatcher("WEB-INF/jsp/paameldingsskjema.jsp").forward(request, response);
 	}
 
@@ -63,22 +74,20 @@ public class PaameldingServlet extends HttpServlet {
 		rs.setKjonn(kjonn);
 
 		if (!Validering.erAlleGyldige(rs)) {
+			request.setAttribute("test", "ja");
 			response.sendRedirect("paamelding");
 		} else {
 			HttpSession sesjon = InnloggingUtil.loggInnMedTimeout(request, 120);
 
-			HashingUtil hashing = new HashingUtil("SHA-256");
-			
 			try {
 				hashing.generateHashWithSalt(passord, hashing.generateSalt());
-				
+
 			} catch (NoSuchAlgorithmException e) {
 				e.printStackTrace();
 			}
 
 			String passordHash = hashing.getPasswordHashinHex();
 			String passordSalt = hashing.getPasswordSalt();
-			
 
 			if (deltagerEAO.erMobilBrukt(mobil)) {
 				response.sendRedirect("paamelding?feilkode=1");
@@ -89,6 +98,7 @@ public class PaameldingServlet extends HttpServlet {
 				request.setAttribute("registreringsskjema", rs);
 				sesjon.setAttribute("innloggetDeltager", d);
 				response.sendRedirect("bekreftelse");
+
 			}
 		}
 
