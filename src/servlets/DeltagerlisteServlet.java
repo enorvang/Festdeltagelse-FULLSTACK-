@@ -26,16 +26,13 @@ public class DeltagerlisteServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
-		
 
 		if (!InnloggingUtil.erInnlogget(request)) {
 			response.sendRedirect("login?feilkode=1");
-		}else {
+		} else {
 			HttpSession sesjon = request.getSession(false);
 			Deltager innloggetDeltager = (Deltager) sesjon.getAttribute("innloggetDeltager");
-			List<Deltager> deltagerliste = deltagerEAO.hentDeltagerliste()
-					.stream()
+			List<Deltager> deltagerliste = deltagerEAO.hentDeltagerliste().stream()
 					.sorted(Comparator.comparing(Deltager::getFornavn).thenComparing(Deltager::getEtternavn))
 					.collect(Collectors.toList());
 

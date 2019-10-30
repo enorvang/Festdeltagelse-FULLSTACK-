@@ -27,6 +27,7 @@ public class LoggInnServlet extends HttpServlet {
 	@EJB
 	DeltagerEAO deltagerEAO;
 
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String feilkode = request.getParameter("feilkode");
@@ -47,15 +48,8 @@ public class LoggInnServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-//		HttpSession sesjon = request.getSession(false);
-//		if (sesjon == null) {
-//			response.sendRedirect("login");
-//		}
-
 		String mobil = request.getParameter("mobil");
 		String passord = request.getParameter("passord");
-
-		
 
 		try {
 			Deltager d = deltagerEAO.finnDeltagerMedMobil(mobil);

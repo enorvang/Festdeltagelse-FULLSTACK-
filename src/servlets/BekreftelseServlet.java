@@ -11,7 +11,6 @@ import javax.servlet.http.HttpSession;
 import entities.Deltager;
 import utilities.InnloggingUtil;
 
-
 @WebServlet(name = "Bekreftelse", urlPatterns = "/bekreftelse")
 public class BekreftelseServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -20,7 +19,7 @@ public class BekreftelseServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		if (!InnloggingUtil.erInnlogget(request)) {
-			// Ved forsøk på å gå direkte til bekreftelse uten å gå gjennom innloggingssiden
+			// Ved forsøk på uautorisert tilgang
 			response.sendRedirect("login?feilkode=1"); // feilkode=1: "Du må logge inn for å se deltagerlisten"
 		} else {
 			HttpSession sesjon = request.getSession(false);

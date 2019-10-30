@@ -44,8 +44,8 @@ public class PaameldingServlet extends HttpServlet {
 		if (gyldigData != null) {
 			if (gyldigData.equals("false")) {
 				request.setAttribute("registreringsskjema", rs);
-			} 
-		}else {
+			}
+		} else {
 			rs = new RegistreringsSkjema();
 			request.setAttribute("registreringsskjema", rs);
 		}
