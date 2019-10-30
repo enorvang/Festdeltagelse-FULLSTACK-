@@ -19,7 +19,7 @@
 		<fieldset>
 			<div class="pure-control-group">
 				<label for="fornavn">Fornavn: </label> <input id="fornavn" type="text"
-					name="fornavn" value="${registreringsskjema.fornavn }" /> 
+					name="fornavn" value="${registreringsskjema.fornavn }" autofocus/> 
 					<font color="red">${registreringsskjema.fornavnFeil}</font>
 			</div>
 			<div class="pure-control-group">
