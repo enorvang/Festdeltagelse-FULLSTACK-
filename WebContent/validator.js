@@ -29,11 +29,19 @@ fornavn.addEventListener("blur", function () {
     gyldigFornavn = validerFelt(fornavn, fornavnRegex);
 });
 
+fornavn.addEventListener("click", function () {
+    gyldigFornavn = validerFelt(fornavn, fornavnRegex);
+});
+
 etternavn.addEventListener("keyup", function () {
     gyldigEtternavn = validerFelt(etternavn, etternavnRegex);
 });
 
 etternavn.addEventListener("blur", function () {
+    gyldigEtternavn = validerFelt(etternavn, etternavnRegex);
+});
+
+etternavn.addEventListener("click", function () {
     gyldigEtternavn = validerFelt(etternavn, etternavnRegex);
 });
 
@@ -45,11 +53,18 @@ mobil.addEventListener("blur", function () {
     gyldigMobil = validerFelt(mobil, mobilRegex);
 });
 
+mobil.addEventListener("click", function () {
+    gyldigMobil = validerFelt(mobil, mobilRegex);
+});
+
 passord.addEventListener("keyup", function () {
     gyldigPassord = validerPassord(passord, passordRegex);
 });
 
 passord.addEventListener("blur", function () {
+    gyldigPassord = validerPassord(passord, passordRegex);
+});
+passord.addEventListener("click", function () {
     gyldigPassord = validerPassord(passord, passordRegex);
 });
 
@@ -67,6 +82,10 @@ passordRepetert.addEventListener("keyup", function () {
 });
 
 passordRepetert.addEventListener("blur", function () {
+    validerPassordRepetert(passordRepetert);
+});
+
+passordRepetert.addEventListener("click", function () {
     validerPassordRepetert(passordRepetert);
 });
 
@@ -121,9 +140,9 @@ function validerFelt(domElement, regex) {
 function validerPassord(passord, regex) {
     let validBool;
     if (passord.value === null || passord.value === "") {
-        if(document.activeElement === passord){
-            event.target.style.borderColor="#129FEA";
-        }else{
+        if (document.activeElement === passord) {
+            event.target.style.borderColor = "#129FEA";
+        } else {
             event.target.style.borderColor = "#ddd";
         }
     } else if (!regex.test(passord.value)) {
