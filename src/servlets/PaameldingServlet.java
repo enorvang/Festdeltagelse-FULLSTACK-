@@ -37,7 +37,7 @@ public class PaameldingServlet extends HttpServlet {
 				feilmelding = "Mobilnummeret er allerede registrert. Logg inn i stedet.";
 			}
 		}
-		RegistreringsSkjema rs = null;
+		RegistreringsSkjema rs;
 		HttpSession sesjon = request.getSession(false);
 
 		if (sesjon == null) {
