@@ -27,18 +27,20 @@ public class HashingUtil {
 		this.hashAlgorithm = hashAlgorithm;
 	}
 
-	public void generateHashWithSalt(final String password, byte[] salt) throws NoSuchAlgorithmException {
+	public void generateHashWithSalt(final String password, byte[] salt) {
 
-		MessageDigest md = MessageDigest.getInstance(hashAlgorithm);
-		md.update(salt); // pass the salt into the update method
-		byte[] passbytes = password.getBytes();
-		byte[] passhash = md.digest(passbytes); // pass the password to the digest method to finally obtain the hash
-												// value of the password + salt
+		try {
+			MessageDigest md = MessageDigest.getInstance(hashAlgorithm);
+			md.update(salt); // pass the salt into the update method
+			byte[] passbytes = password.getBytes();
+			byte[] passhash = md.digest(passbytes); // pass the password to the digest method to finally obtain the hash
+													// value of the password + salt
+			String hexOfHash = DatatypeConverter.printHexBinary(passhash); // passhash is in decimal format - convert
+																			// into hex
+			passwordHash = hexOfHash;
+		} catch (NoSuchAlgorithmException e) {
 
-		String hexOfHash = DatatypeConverter.printHexBinary(passhash); // passhash is in decimal format - convert into
-																		// hex
-
-		passwordHash = hexOfHash;
+		}
 	}
 
 	public boolean validatePasswordWithSalt(final String password, final String salt, final String hashedPassword)
@@ -54,8 +56,10 @@ public class HashingUtil {
 		return equal;
 
 	}
+
 	/**
 	 * Generates new salt
+	 * 
 	 * @return salt as a byte array
 	 */
 	public byte[] generateSalt() {
@@ -76,7 +80,7 @@ public class HashingUtil {
 		passwordSalt = salt;
 		return salt;
 	}
-	
+
 	/**
 	 * 
 	 * @return passwordHash in hexadecimal format

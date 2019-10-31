@@ -1,7 +1,6 @@
 package servlets;
 
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -47,11 +46,7 @@ public class PaameldingServlet extends HttpServlet {
 			rs = (RegistreringsSkjema) sesjon.getAttribute("registreringsskjema");
 		}
 
-		if (rs != null) {
-			System.out.println("I doGet(...): " + rs.toString());
-		}
 		request.setAttribute("feilmelding", feilmelding);
-//		request.setAttribute("registreringsskjema", rs);
 		sesjon.setAttribute("registreringsskjema", rs);
 
 		request.getRequestDispatcher("WEB-INF/jsp/paameldingsskjema.jsp").forward(request, response);
@@ -70,8 +65,7 @@ public class PaameldingServlet extends HttpServlet {
 		HttpSession sesjon = request.getSession(false);
 		if (sesjon != null) {
 			RegistreringsSkjema rs = (RegistreringsSkjema) sesjon.getAttribute("registreringsskjema");
-			
-			
+
 			rs.setFornavn(fornavn);
 			rs.setEtternavn(etternavn);
 			rs.setMobil(mobil);
@@ -81,18 +75,13 @@ public class PaameldingServlet extends HttpServlet {
 
 			if (!Validering.erAlleGyldige(rs)) {
 				sesjon.setAttribute("registreringsskjema", rs);
-				System.out.println("I doPost(...): " + rs.toString());
 				response.sendRedirect("paamelding");
 
 			} else {
 				sesjon = InnloggingUtil.loggInnMedTimeout(request, 120);
 				HashingUtil hashing = new HashingUtil("SHA-256");
-				try {
-					hashing.generateHashWithSalt(passord, hashing.generateSalt());
 
-				} catch (NoSuchAlgorithmException e) {
-					e.printStackTrace();
-				}
+				hashing.generateHashWithSalt(passord, hashing.generateSalt());
 
 				String passordHash = hashing.getPasswordHashinHex();
 				String passordSalt = hashing.getPasswordSalt();
@@ -103,7 +92,6 @@ public class PaameldingServlet extends HttpServlet {
 					Deltager d = new Deltager(fornavn, etternavn, mobil, passordHash, kjonn, passordSalt);
 
 					deltagerEAO.leggTilDeltager(d);
-//				request.setAttribute("registreringsskjema", rs);
 					sesjon.setAttribute("registreringsskjema", rs);
 					sesjon.setAttribute("innloggetDeltager", d);
 					response.sendRedirect("bekreftelse");
