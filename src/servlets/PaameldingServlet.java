@@ -72,27 +72,27 @@ public class PaameldingServlet extends HttpServlet {
 			rs.setPassord(passord);
 			rs.setPassordRepetert(passordRepetert);
 			rs.setKjonn(kjonn);
+			sesjon.setAttribute("registreringsskjema", rs);
 
 			if (!Validering.erAlleGyldige(rs)) {
-				sesjon.setAttribute("registreringsskjema", rs);
+
 				response.sendRedirect("paamelding");
 
 			} else {
-				sesjon = InnloggingUtil.loggInnMedTimeout(request, 120);
-				HashingUtil hashing = new HashingUtil("SHA-256");
-
-				hashing.generateHashWithSalt(passord, hashing.generateSalt());
-
-				String passordHash = hashing.getPasswordHashinHex();
-				String passordSalt = hashing.getPasswordSalt();
-
 				if (deltagerEAO.erMobilBrukt(mobil)) {
+
 					response.sendRedirect("paamelding?feilkode=1");
 				} else {
+					sesjon = InnloggingUtil.loggInnMedTimeout(request, 120);
+					HashingUtil hashing = new HashingUtil("SHA-256");
+
+					hashing.generateHashWithSalt(passord, hashing.generateSalt());
+
+					String passordHash = hashing.getPasswordHashinHex();
+					String passordSalt = hashing.getPasswordSalt();
 					Deltager d = new Deltager(fornavn, etternavn, mobil, passordHash, kjonn, passordSalt);
 
 					deltagerEAO.leggTilDeltager(d);
-					sesjon.setAttribute("registreringsskjema", rs);
 					sesjon.setAttribute("innloggetDeltager", d);
 					response.sendRedirect("bekreftelse");
 
