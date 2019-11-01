@@ -36,6 +36,7 @@ public class PaameldingServlet extends HttpServlet {
 		}else {
 			
 			sesjon = request.getSession(true);
+			sesjon.setMaxInactiveInterval(40);
 			rs = new RegistreringsSkjema();
 		}
 		
