@@ -27,7 +27,18 @@ public class PaameldingServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
+		
+		RegistreringsSkjema rs;
+		HttpSession sesjon = request.getSession(false);
+		
+		if(sesjon != null) {
+			rs = (RegistreringsSkjema) sesjon.getAttribute("registreringsskjema");
+		}else {
+			
+			sesjon = request.getSession(true);
+			rs = new RegistreringsSkjema();
+		}
+		
 		String feilkode = request.getParameter("feilkode");
 		String feilmelding = "";
 
@@ -36,16 +47,7 @@ public class PaameldingServlet extends HttpServlet {
 				feilmelding = "Mobilnummeret er allerede registrert. Logg inn i stedet.";
 			}
 		}
-		RegistreringsSkjema rs;
-		HttpSession sesjon = request.getSession(false);
-
-		if (sesjon == null) {
-			sesjon = request.getSession(true);
-			rs = new RegistreringsSkjema();
-		} else {
-			rs = (RegistreringsSkjema) sesjon.getAttribute("registreringsskjema");
-		}
-
+		
 		request.setAttribute("feilmelding", feilmelding);
 		sesjon.setAttribute("registreringsskjema", rs);
 
@@ -72,15 +74,17 @@ public class PaameldingServlet extends HttpServlet {
 			rs.setPassord(passord);
 			rs.setPassordRepetert(passordRepetert);
 			rs.setKjonn(kjonn);
+			
 			sesjon.setAttribute("registreringsskjema", rs);
 
 			if (!Validering.erAlleGyldige(rs)) {
-
+				
 				response.sendRedirect("paamelding");
 
 			} else {
 				if (deltagerEAO.erMobilBrukt(mobil)) {
-
+					rs.setPassord("");
+					rs.setPassordRepetert("");
 					response.sendRedirect("paamelding?feilkode=1");
 				} else {
 					sesjon = InnloggingUtil.loggInnMedTimeout(request, 120);

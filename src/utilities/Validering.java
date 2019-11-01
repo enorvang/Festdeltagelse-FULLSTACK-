@@ -42,18 +42,21 @@ public class Validering {
 		if (!erGyldigFornavn(rs.getFornavn())) {
 			gyldigInput = false;
 			rs.setFornavnFeil("Ugyldig fornavn");
+			rs.setFornavn("");
 		} else {
 			rs.setFornavnFeil("");
 		}
 		if (!erGyldigEtternavn(rs.getEtternavn())) {
 			gyldigInput = false;
 			rs.setEtternavnFeil("Ugyldig etternavn");
+			rs.setEtternavn("");
 		} else {
 			rs.setEtternavnFeil("");
 		}
 		if (!erGyldigMobil(rs.getMobil())) {
 			gyldigInput = false;
 			rs.setMobilFeil("Ugyldig mobil");
+			rs.setMobil("");
 		} else {
 			rs.setMobilFeil("");
 		}
@@ -75,6 +78,11 @@ public class Validering {
 			rs.setKjonnFeil("Du må oppgi kjønn");
 		} else {
 			rs.setKjonnFeil("");
+		}
+		
+		if(!gyldigInput) {
+			rs.setPassord("");
+			rs.setPassordRepetert("");
 		}
 		return gyldigInput;
 	}
